@@ -57,6 +57,7 @@ android {
 
 dependencies {
 
+    val richtextVersion = "0.16.0"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,10 +67,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -78,12 +75,15 @@ dependencies {
     implementation(libs.ktor.client.cio)   // CIO engine for Ktor client
     implementation(libs.ktor.client.json)   // JSON handling for Ktor client
     implementation(libs.ktor.client.serialization)  // Kotlinx Serialization for JSON
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.3") // Kotlinx serialization for JSON parsing
+    implementation(libs.ktor.serialization.kotlinx.json) // Kotlinx serialization for JSON parsing
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
     implementation (libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
-
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.richtext.commonmark)
+    implementation("com.halilibo.compose-richtext:richtext-ui:${richtextVersion}")
+    implementation("com.halilibo.compose-richtext:richtext-commonmark:${richtextVersion}")
 }

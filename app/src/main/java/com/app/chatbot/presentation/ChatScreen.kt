@@ -29,7 +29,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun ChatScreen(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
     var query by remember { mutableStateOf("") }
-
     val responses = chatScreenViewModel.responses.value
     val isLoading = chatScreenViewModel.isLoading.value
     val errorMessage = chatScreenViewModel.errorMessage.value

@@ -5,24 +5,25 @@ coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-kotlinxSerializationJson = "1.8.0"
-kotlinxSerialization ="1.6"
 ktorClientCio = "3.0.3"
 ktorClientContentNegotiation = "3.0.3"
 ktorClientCore = "3.0.3"
 ktorClientJson = "3.0.3"
 ktorClientLogging = "3.0.3"
 ktorClientSerialization = "3.0.3"
-langchain4j = "1.0.0-alpha1"
-langchain4jMistralAi = "1.0.0-alpha1"
+ktorSerializationKotlinxJson = "3.0.3"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
 coroutines = "1.9.0"
 lifecycleViewmodelCompose = "2.8.7"
+markdown = "0.3.15"
+materialIconsExtended = "1.7.6"
+richtextCommonmark = "0.16.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -36,7 +37,6 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorClientCio" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientContentNegotiation" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
@@ -46,8 +46,10 @@ ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", vers
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
-langchain4j = { module = "dev.langchain4j:langchain4j", version.ref = "langchain4j" }
-langchain4j-mistral-ai = { module = "dev.langchain4j:langchain4j-mistral-ai", version.ref = "langchain4jMistralAi" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
+markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
+richtext-commonmark = { module = "com.halilibo.compose-richtext:richtext-commonmark", version.ref = "richtextCommonmark" }
+
 
 
 [plugins]

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.chatbot.presentation.ChatScreen
+import com.app.chatbot.presentation.HomeScreen
 import com.app.chatbot.ui.theme.ChatbotTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
             ChatbotTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(modifier = Modifier.padding(innerPadding)) {
-                        ChatScreen()
+                        HomeScreen()
                     }
                 }
             }
