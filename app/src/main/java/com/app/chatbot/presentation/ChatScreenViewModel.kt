@@ -1,18 +1,20 @@
 package com.app.chatbot.presentation
 
-import com.app.chatbot.repository.ChatRepository
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.chatbot.repository.ChatRepository
 import kotlinx.coroutines.launch
 import android.util.Log
+import com.app.chatbot.presentation.model.ChatItem
+
 
 class ChatScreenViewModel : ViewModel() {
     private val repository = ChatRepository()
 
-    private val _responses = mutableStateOf<List<String>>(emptyList())
-    val responses: State<List<String>> = _responses
+    private val _responses = mutableStateOf<List<ChatItem>>(emptyList())
+    val responses: State<List<ChatItem>> = _responses
 
     private val _isLoading = mutableStateOf(false)
     val isLoading: State<Boolean> = _isLoading
@@ -27,7 +29,8 @@ class ChatScreenViewModel : ViewModel() {
             try {
                 val result: String? = repository.sendMessage(query)
                 if (result != null) {
-                    _responses.value = listOf(result)
+                    val newChatItem = ChatItem(query = query, response = result)
+                    _responses.value += newChatItem
                 } else {
                     _errorMessage.value = "Failed to get a response from the server."
                 }

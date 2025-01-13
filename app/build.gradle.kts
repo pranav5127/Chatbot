@@ -57,7 +57,7 @@ android {
 
 dependencies {
 
-    val richtextVersion = "0.16.0"
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -83,7 +83,6 @@ dependencies {
     implementation (libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.androidx.material.icons.extended)
-    implementation(libs.richtext.commonmark)
-    implementation("com.halilibo.compose-richtext:richtext-ui:${richtextVersion}")
-    implementation("com.halilibo.compose-richtext:richtext-commonmark:${richtextVersion}")
+
+    implementation("com.meetup:twain:0.2.2")
 }
