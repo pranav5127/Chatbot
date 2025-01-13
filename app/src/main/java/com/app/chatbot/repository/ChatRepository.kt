@@ -36,9 +36,9 @@ class ChatRepository {
             level = LogLevel.ALL
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = 10000
+            requestTimeoutMillis = 20000
             connectTimeoutMillis = 5000
-            socketTimeoutMillis = 10000
+            socketTimeoutMillis = 20000
         }
     }
 

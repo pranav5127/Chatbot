@@ -32,7 +32,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -150,6 +149,7 @@ fun TopBar(onNavigationIconClick: () -> Unit) {
 fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
     var query by remember { mutableStateOf("") }
 
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -182,7 +182,7 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
 @Composable
 fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues: PaddingValues) {
 
-    val responses = chatScreenViewModel.responses.value
+    val responses = chatScreenViewModel.responses
     val isLoading = chatScreenViewModel.isLoading.value
     val errorMessage = chatScreenViewModel.errorMessage.value
     Column(
@@ -196,8 +196,9 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
                 .fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
         ) {
-            items(responses) { response ->
+            items(responses.value){response ->
                 ResponseCard(response)
+
             }
         }
 
