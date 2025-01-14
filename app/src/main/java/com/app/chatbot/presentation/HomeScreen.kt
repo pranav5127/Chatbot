@@ -4,9 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,11 +48,11 @@ import com.app.chatbot.presentation.components.ResponseCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+   
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -61,7 +65,6 @@ fun HomeScreen() {
         }
     ) {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopBar(onNavigationIconClick = {
                     scope.launch {
@@ -72,8 +75,10 @@ fun HomeScreen() {
             bottomBar = {
                 BottomBar()
             }
+
         ) { paddingValues ->
             Chats(paddingValues = paddingValues)
+
         }
     }
 }
@@ -94,7 +99,6 @@ fun AppDrawerContent(
                     drawerState.close()
                 }
                 onDrawerItemClick()
-
             }
         )
         NavigationDrawerItem(
@@ -105,20 +109,16 @@ fun AppDrawerContent(
                     drawerState.close()
                 }
                 onDrawerItemClick()
-
             }
         )
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(onNavigationIconClick: () -> Unit) {
+
     TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-        ),
         title = { Text(text = "Chatbot") },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
@@ -141,7 +141,10 @@ fun TopBar(onNavigationIconClick: () -> Unit) {
                     contentDescription = "Options",
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
     )
 }
 
@@ -149,18 +152,23 @@ fun TopBar(onNavigationIconClick: () -> Unit) {
 fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
     var query by remember { mutableStateOf("") }
 
-
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+
     ) {
         OutlinedTextField(
+            /*TODO: Ime actions keyboard done*/
             value = query,
             onValueChange = { query = it },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 16.dp),
+                .windowInsetsPadding(WindowInsets.ime),
             shape = RoundedCornerShape(24.dp),
             placeholder = { Text("Type a message...") },
+
             trailingIcon = {
                 IconButton(
                     onClick = {
@@ -179,29 +187,28 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
     }
 }
 
+
 @Composable
 fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues: PaddingValues) {
-
     val responses = chatScreenViewModel.responses
     val isLoading = chatScreenViewModel.isLoading.value
     val errorMessage = chatScreenViewModel.errorMessage.value
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .padding(paddingValues)
+
     ) {
         LazyColumn(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
         ) {
-            items(responses.value){response ->
+            items(responses.value) { response ->
                 ResponseCard(response)
-
             }
-        }
 
+        }
         // Loading and error indicators
         if (isLoading) {
             Row(
@@ -228,10 +235,11 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
                 )
             }
         }
+
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
     HomeScreen()
