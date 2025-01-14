@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Segment
@@ -35,12 +36,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -151,6 +154,7 @@ fun TopBar(onNavigationIconClick: () -> Unit) {
 @Composable
 fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
     var query by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier
@@ -160,7 +164,7 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
 
     ) {
         OutlinedTextField(
-            /*TODO: Ime actions keyboard done*/
+
             value = query,
             onValueChange = { query = it },
             modifier = Modifier
@@ -172,8 +176,11 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        chatScreenViewModel.sendQuery(query)
-                        query = ""
+                        if (query.isNotEmpty()) {
+                            chatScreenViewModel.sendQuery(query)
+                            query = ""
+                            keyboardController?.hide()
+                        }
                     },
                     enabled = query.isNotEmpty()
                 ) {
@@ -193,16 +200,28 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
     val responses = chatScreenViewModel.responses
     val isLoading = chatScreenViewModel.isLoading.value
     val errorMessage = chatScreenViewModel.errorMessage.value
+    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(responses.value) {
+        if(responses.value.isNotEmpty()){
+            coroutineScope.launch {
+                lazyListState.animateScrollToItem(responses.value.size - 1)
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
             .padding(paddingValues)
 
     ) {
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
+            state = lazyListState
         ) {
             items(responses.value) { response ->
                 ResponseCard(response)
