@@ -23,17 +23,11 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.app.chatbot" />
+                  <option name="mobileSdkAppId" value="1:506407536274:android:b73052422c77171828884b" />
+                  <option name="projectId" value="chatbot-1a31c" />
+                  <option name="projectNumber" value="506407536274" />
                 </ConnectionSetting>
-              </option>
-              <option name="failureTypes">
-                <list>
-                  <option value="FATAL" />
-                  <option value="ANR" />
-                </list>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
               <option name="timeIntervalDays" value="THIRTY_DAYS" />

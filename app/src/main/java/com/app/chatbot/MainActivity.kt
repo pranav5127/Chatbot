@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
-import com.app.chatbot.presentation.HomeScreen
+import com.app.chatbot.presentation.auth.signin.MainScreen
+import com.app.chatbot.presentation.auth.signin.SignInScreen
+import com.app.chatbot.presentation.auth.signup.SignUpScreen
 import com.app.chatbot.ui.theme.ChatbotTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,7 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ChatbotTheme {
-               HomeScreen()
+                MainNavigation()
             }
         }
     }

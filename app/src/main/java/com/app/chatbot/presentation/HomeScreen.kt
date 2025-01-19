@@ -47,12 +47,15 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.app.chatbot.presentation.components.ResponseCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
     val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
     val scope = rememberCoroutineScope()
    
@@ -164,7 +167,6 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
 
     ) {
         OutlinedTextField(
-
             value = query,
             onValueChange = { query = it },
             modifier = Modifier
@@ -228,6 +230,7 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
             }
 
         }
+        /*TODO: Fix loading animations*/
         // Loading and error indicators
         if (isLoading) {
             Row(
@@ -257,9 +260,9 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
 
     }
 }
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
-}
+//
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun HomeScreenPreview() {
+//    HomeScreen()
+//}
