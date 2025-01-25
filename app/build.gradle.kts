@@ -83,21 +83,27 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation (libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.twain)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-
-    implementation(libs.androidx.credentials)
 
     api(libs.androidx.navigation.compose)
 
-    implementation( libs.androidx.credentials.play.services.auth)
-    implementation (libs.googleid)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+
+    implementation(libs.androidx.core.splashscreen)
+
+
+
 
 
 }

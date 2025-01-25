@@ -1,16 +1,6 @@
 package com.app.chatbot.presentation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,45 +10,27 @@ import androidx.compose.material.icons.automirrored.filled.Segment
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.app.chatbot.Screen
+import com.app.chatbot.presentation.auth.signin.clearSession
 import com.app.chatbot.presentation.components.ResponseCard
+import com.app.chatbot.repository.auth.GoogleAuthClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navController: NavController,
+    googleAuthClient: GoogleAuthClient
 ) {
-    val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-   
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -66,7 +38,13 @@ fun HomeScreen(
             AppDrawerContent(
                 drawerState = drawerState,
                 scope = scope,
-                onDrawerItemClick = { /* Handle item click */ }
+                onLogoutClick = {
+                    scope.launch {
+                        googleAuthClient.signOut()
+                        navController.navigate(Screen.SignInScreen.route)
+                        clearSession(navController.context.getSharedPreferences("user_prefs", 0))
+                    }
+                }
             )
         }
     ) {
@@ -76,15 +54,13 @@ fun HomeScreen(
                     scope.launch {
                         drawerState.open()
                     }
-                })
+                }, googleAuthClient = googleAuthClient)
             },
             bottomBar = {
                 BottomBar()
             }
-
         ) { paddingValues ->
             Chats(paddingValues = paddingValues)
-
         }
     }
 }
@@ -93,18 +69,18 @@ fun HomeScreen(
 fun AppDrawerContent(
     drawerState: DrawerState,
     scope: CoroutineScope,
-    onDrawerItemClick: () -> Unit
+    onLogoutClick: () -> Unit
 ) {
     ModalDrawerSheet {
         Text("History", modifier = Modifier.padding(16.dp))
         NavigationDrawerItem(
-            label = { Text("Item 1") },
+            label = { Text("Logout") },
             selected = false,
             onClick = {
                 scope.launch {
                     drawerState.close()
                 }
-                onDrawerItemClick()
+                onLogoutClick()
             }
         )
         NavigationDrawerItem(
@@ -114,7 +90,6 @@ fun AppDrawerContent(
                 scope.launch {
                     drawerState.close()
                 }
-                onDrawerItemClick()
             }
         )
     }
@@ -122,7 +97,11 @@ fun AppDrawerContent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(onNavigationIconClick: () -> Unit) {
+fun TopBar(
+    onNavigationIconClick: () -> Unit,
+    googleAuthClient: GoogleAuthClient
+) {
+    val coroutineScope = rememberCoroutineScope()
 
     TopAppBar(
         title = { Text(text = "Chatbot") },
@@ -141,7 +120,11 @@ fun TopBar(onNavigationIconClick: () -> Unit) {
                     contentDescription = "New Chat",
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                coroutineScope.launch {
+                    googleAuthClient.signOut()
+                }
+            }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = "Options",
@@ -164,7 +147,6 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
             .fillMaxWidth()
             .windowInsetsPadding(WindowInsets.navigationBars)
             .padding(horizontal = 8.dp, vertical = 8.dp)
-
     ) {
         OutlinedTextField(
             value = query,
@@ -174,7 +156,6 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
                 .windowInsetsPadding(WindowInsets.ime),
             shape = RoundedCornerShape(24.dp),
             placeholder = { Text("Type a message...") },
-
             trailingIcon = {
                 IconButton(
                     onClick = {
@@ -196,7 +177,6 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
     }
 }
 
-
 @Composable
 fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues: PaddingValues) {
     val responses = chatScreenViewModel.responses
@@ -206,7 +186,7 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(responses.value) {
-        if(responses.value.isNotEmpty()){
+        if (responses.value.isNotEmpty()) {
             coroutineScope.launch {
                 lazyListState.animateScrollToItem(responses.value.size - 1)
             }
@@ -216,22 +196,17 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
     Column(
         modifier = Modifier
             .padding(paddingValues)
-
     ) {
-
         LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
             state = lazyListState
         ) {
             items(responses.value) { response ->
                 ResponseCard(response)
             }
-
         }
-        /*TODO: Fix loading animations*/
-        // Loading and error indicators
+
         if (isLoading) {
             Row(
                 modifier = Modifier
@@ -257,12 +232,5 @@ fun Chats(chatScreenViewModel: ChatScreenViewModel = viewModel(), paddingValues:
                 )
             }
         }
-
     }
 }
-//
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun HomeScreenPreview() {
-//    HomeScreen()
-//}
