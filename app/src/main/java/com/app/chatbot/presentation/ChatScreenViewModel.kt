@@ -22,6 +22,10 @@ class ChatScreenViewModel : ViewModel() {
     private val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: State<String?> = _errorMessage
 
+    fun clearResponses() {
+        _responses.value = emptyList()
+    }
+
     fun sendQuery(query: String) {
         viewModelScope.launch {
             _isLoading.value = true
