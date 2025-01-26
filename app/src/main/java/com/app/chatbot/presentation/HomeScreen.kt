@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Segment
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AddCircleOutline
+import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,6 +51,7 @@ import androidx.navigation.NavController
 import com.app.chatbot.Screen
 import com.app.chatbot.presentation.auth.signin.clearSession
 import com.app.chatbot.presentation.components.ResponseCard
+import com.app.chatbot.presentation.model.ChatItem
 import com.app.chatbot.repository.auth.GoogleAuthClient
 import com.app.chatbot.repository.db.ChatDatabase
 import com.app.chatbot.repository.db.ChatMessage
@@ -123,21 +125,31 @@ fun AppDrawerContent(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            Text("History", modifier = Modifier.padding(16.dp))
+            Text(
+                "History", modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.bodyLarge
+            )
 
             LazyColumn(
                 modifier = Modifier.weight(1f)
             ) {
                 items(chatHistory) { message ->
-                    Text(
-                        text = message.message,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
+                  Card(
+                      modifier = Modifier.padding(8.dp)
+                  ) {
+                      Text(
+                          text = message.message,
+                          modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                      )
+                  }
                 }
             }
 
             NavigationDrawerItem(
-                label = { Text("Logout") },
+                label = { Text(
+                    "Logout",
+                    style = MaterialTheme.typography.titleMedium
+                ) },
                 selected = false,
                 onClick = {
                     scope.launch {
@@ -208,7 +220,8 @@ fun BottomBar(chatScreenViewModel: ChatScreenViewModel = viewModel()) {
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        if (query.isNotEmpty()) {
+                        if (
+                            query.isNotEmpty()) {
                             chatScreenViewModel.sendQuery(query)
                             query = ""
                             keyboardController?.hide()
@@ -255,7 +268,6 @@ fun Chats(
             items(responses.value) { response ->
                 ResponseCard(response)
 
-                // Combine query and response as a single string and save it
                 LaunchedEffect(response) {
                     val combinedMessage = "Query: ${response.query}\nResponse: ${response.response}"
                     chatHistoryViewModel.saveMessage(

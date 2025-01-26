@@ -44,70 +44,11 @@ class AuthenticationManager(val context: Context) {
         awaitClose()
 
     }
-/*
-    private fun createNonce(): String{
-        val rawNonce = UUID.randomUUID().toString()
-        val bytes = rawNonce.toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
 
-        return digest.fold("") { str, it ->
-            str + "%02x".format(it)
-        }
+    fun forgetPassword(email: String): Flow<AuthResponse> = callbackFlow {
+        auth.sendPasswordResetEmail(email)
+
     }
-   fun signInWithGoogle(): Flow<AuthResponse> = callbackFlow {
-        val googleIdOptions = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(context.getString(R.string.web_client_id))
-            .setAutoSelectEnabled(false)
-            .setNonce(createNonce())
-            .build()
-
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOptions)
-            .build()
-
-        try {
-            val credentialManager =  androidx.credentials.CredentialManager.create(context)
-
-            val result = credentialManager.getCredential(
-                context = context,
-                request = request
-            )
-
-            val credential = result.credential
-            if(credential is CustomCredential) {
-                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                    try {
-                        val googleIdTokenCredential = GoogleIdTokenCredential
-                            .createFrom(credential.data)
-                        val firebaseCredential = GoogleAuthProvider.getCredential(
-                            googleIdTokenCredential.idToken,
-                            null
-                        )
-
-                        auth.signInWithCredential(firebaseCredential)
-                            .addOnCompleteListener{
-                                if (it.isSuccessful) {
-                                    trySend(AuthResponse.Success)
-                                } else {
-                                    trySend(AuthResponse.Error(it.exception?.message ?: "Unknown error"))
-                                }
-                            }
-                    } catch (e: GoogleIdTokenParsingException) {
-                        trySend(AuthResponse.Error(e.message ?: "Unknown error"))
-                    }
-
-                }
-            }
-
-
-        } catch(e: Exception) {
-            trySend(AuthResponse.Error(e.message ?: "Unknown error"))
-        }
-        awaitClose()
-
-    } */
  }
 
 

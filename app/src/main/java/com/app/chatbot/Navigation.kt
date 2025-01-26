@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.app.chatbot.presentation.HomeScreen
+import com.app.chatbot.presentation.auth.signin.ForgetPassword
 import com.app.chatbot.presentation.auth.signin.SignInScreen
 import com.app.chatbot.presentation.auth.signup.SignUpScreen
 import com.app.chatbot.repository.auth.GoogleAuthClient
@@ -22,6 +23,9 @@ fun MainNavigation(googleAuthClient: GoogleAuthClient){
         }
         composable(route = Screen.HomeScreen.route){
             HomeScreen(navController = navController, googleAuthClient = googleAuthClient)
+        }
+        composable(route = Screen.ForgetPassword.route){
+            ForgetPassword(navController = navController)
         }
 
     }
