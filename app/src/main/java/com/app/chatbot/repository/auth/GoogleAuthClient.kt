@@ -88,7 +88,7 @@ class GoogleAuthClient(
     }
 
     private suspend fun buildCredentialRequest(): GetCredentialResponse {
-        val webClientId = context.getString(R.string.web_client_id)
+        val webClientId = context.getString(R.string.server_client_id)
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(
                 GetGoogleIdOption.Builder()
