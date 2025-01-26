@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.app.chatbot.Screen
 import com.app.chatbot.repository.auth.AuthResponse
 import com.app.chatbot.repository.auth.AuthenticationManager
 import kotlinx.coroutines.flow.launchIn
@@ -140,6 +141,7 @@ fun SignUpScreen(
                                     Log.d("LOGGED_IN", "Login callback triggered $response")
                                 }
                             }.launchIn(coroutineScope)
+                        navController.navigate(Screen.SignInScreen.route)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = password.isNotEmpty() && confirmPassword.isNotEmpty() && isPasswordMatch

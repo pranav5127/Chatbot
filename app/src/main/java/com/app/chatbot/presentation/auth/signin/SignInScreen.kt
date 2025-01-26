@@ -47,10 +47,8 @@ fun SignInScreen(
 
     val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    // State to track navigation to HomeScreen
     var hasNavigatedToHome by remember { mutableStateOf(false) }
 
-    // Observe `isLoggedIn` using LaunchedEffect
     val isLoggedIn = remember { mutableStateOf(sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false)) }
 
     LaunchedEffect(isLoggedIn.value) {
@@ -104,7 +102,7 @@ fun SignInScreen(
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = "Forgot Password?",
-                        modifier = Modifier.clickable { /* Navigate to forgot password screen */ }
+                        modifier = Modifier.clickable { navController.navigate(Screen.ForgetPassword.route)}
                     )
                 }
                 Spacer(modifier = Modifier.size(16.dp))
@@ -146,7 +144,7 @@ fun SignInScreen(
                         modifier = Modifier.clickable {
                             navController.navigate(Screen.SignUpScreen.route)
                         },
-                        color = Color.Blue
+                        color = Color(0xFF00B2FF)
                     )
                 }
                 Spacer(modifier = Modifier.size(16.dp))
