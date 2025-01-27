@@ -1,5 +1,8 @@
 # Chatbot
 
+<img src="media/Home.jpg" alt="HomeScreen"  width="200">    <img src="media/signIn.jpg" alt="SignIn" width="200"> 
+[Chatbot](media/chatbot.mp4)
+
 ## 📖 Overview
 
 The **Chatbot App** is a conversational assistant built using the Mistral API for natural language understanding. This app provides seamless interactions and can be customized for various use cases such as customer support, personal assistance, or educational tools.
@@ -19,14 +22,6 @@ The **Chatbot App** is a conversational assistant built using the Mistral API fo
 - Internet connection for API requests
 - **Firebase** for Authentication
 
-### ScreenShots
-
-<img src="media/Home.jpg" alt="HomeScreen"  width="200">    <img src="media/signIn.jpg" alt="SignIn" width="200"> 
-
-<video controls width="200">
-  <source src="media/chatbot.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
 
 ### 2. Clone the Repository
 
