@@ -1,7 +1,20 @@
 # Chatbot
 
-<img src="media/Home.jpg" alt="HomeScreen"  width="200">    <img src="media/signIn.jpg" alt="SignIn" width="200"> 
-[Chatbot](media/chatbot.mp4)
+<div style="display: flex; justify-content: space-around; align-items: center;">
+  <a href="link_to_home_page">
+    <img src="media/Home.jpg" alt="HomeScreen" width="200">
+  </a>
+  <a href="link_to_sign_in_page">
+    <img src="media/signIn.jpg" alt="SignIn" width="200">
+  </a>
+    <a href="link_to_chatbot">
+    <img src="media/ch.gif" alt="SignIn" width="200">
+  </a>
+
+</div>
+
+
+
 
 ## 📖 Overview
 
